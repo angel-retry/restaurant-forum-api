@@ -1,4 +1,6 @@
 const { User } = require('../models')
+const bcrypt = require('bcryptjs')
+const jwt = require('jsonwebtoken')
 
 const authControllers = {
   postSignup: (req, res, next) => {
@@ -32,12 +34,32 @@ const authControllers = {
           throw err
         }
 
-        return User.create({ name, email, password })
+        return bcrypt.hash(password, 10)
+          .then(hashPassword => {
+            return User.create({ name, email, password: hashPassword })
+          })
       })
       .then(() => {
         return res.status(200).json({ status: 'success', message: '註冊成功!' })
       })
       .catch(err => next(err))
+  },
+  postSignin: (req, res, next) => {
+    try {
+      const userData = req.user.toJSON()
+      delete userData.password
+      const token = jwt.sign(userData, process.env.JWT_SECRET, { expiresIn: '30d' })
+
+      return res.json({
+        status: 'success',
+        data: {
+          token,
+          user: userData
+        }
+      })
+    } catch (error) {
+      next(error)
+    }
   }
 }
 

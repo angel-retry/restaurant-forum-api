@@ -1,11 +1,14 @@
+require('dotenv').config()
 const express = require('express')
 const app = express()
 const port = 3000
-
+const passport = require('./config/passport')
 const router = require('./routes')
 
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
+
+app.use(passport.initialize())
 
 app.get('/', (req, res) => {
   res.send('Hello World!')
