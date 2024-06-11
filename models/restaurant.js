@@ -16,6 +16,10 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: 'restaurantId',
         as: 'LikedUsers'
       })
+      Restaurant.belongsTo(models.User, {
+        foreignKey: 'userId',
+        as: 'CreatedBy'
+      })
     }
   }
   Restaurant.init({
@@ -40,7 +44,11 @@ module.exports = (sequelize, DataTypes) => {
     image: DataTypes.STRING,
     createdBy: {
       allowNull: false,
-      type: DataTypes.INTEGER
+      type: DataTypes.INTEGER,
+      references: {
+        model: 'Users',
+        key: 'id'
+      }
     },
     categoryId: {
       allowNull: false,
