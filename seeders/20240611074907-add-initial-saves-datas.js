@@ -7,16 +7,33 @@ module.exports = {
       type: queryInterface.sequelize.QueryTypes.SELECT
     })
 
-    const Restaurants = await queryInterface.sequelize.query('SELECT id FROM Restaurants', {
+    const restaurants = await queryInterface.sequelize.query('SELECT id FROM Restaurants', {
       type: queryInterface.sequelize.QueryTypes.SELECT
     })
 
-    await queryInterface.bulkInsert('Saves', Array.from({ length: 15 }, () => ({
-      user_id: users[Math.floor(Math.random() * users.length)].id,
-      restaurant_id: Restaurants[Math.floor(Math.random() * Restaurants.length)].id,
-      created_at: new Date(),
-      updated_at: new Date()
-    })))
+    const saves = []
+    const selectedPairs = new Set()
+
+    while (saves.length < 15) {
+      let userId, restaurantId, pair
+
+      do {
+        userId = users[Math.floor(Math.random() * users.length)].id
+        restaurantId = restaurants[Math.floor(Math.random() * restaurants.length)].id
+        pair = `${userId}-${restaurantId}`
+      } while (selectedPairs.has(pair))
+
+      selectedPairs.add(pair)
+
+      saves.push({
+        user_id: userId,
+        restaurant_id: restaurantId,
+        created_at: new Date(),
+        updated_at: new Date()
+      })
+    }
+
+    await queryInterface.bulkInsert('Saves', saves)
   },
 
   async down (queryInterface, Sequelize) {
