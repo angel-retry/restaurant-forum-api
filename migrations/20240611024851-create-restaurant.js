@@ -19,10 +19,10 @@ module.exports = {
       address: {
         type: Sequelize.STRING
       },
-      addressURL: {
+      address_url: {
         type: Sequelize.STRING
       },
-      openingHours: {
+      opening_hours: {
         type: Sequelize.JSON
       },
       introduction: {
@@ -32,11 +32,11 @@ module.exports = {
       image: {
         type: Sequelize.STRING
       },
-      createdBy: {
+      created_by: {
         allowNull: false,
         type: Sequelize.INTEGER
       },
-      categoryId: {
+      category_id: {
         type: Sequelize.INTEGER
       },
       created_at: {
