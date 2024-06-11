@@ -11,14 +11,22 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate (models) {
       Restaurant.belongsTo(models.Category, { foreignKey: 'categoryId' })
+
       Restaurant.hasMany(models.User, {
         through: models.Like,
         foreignKey: 'restaurantId',
         as: 'LikedUsers'
       })
+
       Restaurant.belongsTo(models.User, {
         foreignKey: 'userId',
         as: 'CreatedBy'
+      })
+
+      Restaurant.hasMany(models.User, {
+        through: models.Save,
+        foreignKey: 'restaurantId',
+        as: 'SavedUsers'
       })
     }
   }

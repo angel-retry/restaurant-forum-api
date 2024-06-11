@@ -20,6 +20,12 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: 'userId',
         as: 'CreatedRestaurants'
       })
+
+      User.hasMany(models.Restaurant, {
+        through: models.Save,
+        foreignKey: 'userId',
+        as: 'SavedRestaurants'
+      })
     }
   }
   User.init({
