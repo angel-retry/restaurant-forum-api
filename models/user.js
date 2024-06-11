@@ -10,7 +10,7 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate (models) {
-      User.hasMany(models.Restaurant, {
+      User.belongsToMany(models.Restaurant, {
         through: models.Like,
         foreignKey: 'userId',
         as: 'LikedRestaurants'
@@ -21,7 +21,7 @@ module.exports = (sequelize, DataTypes) => {
         as: 'CreatedRestaurants'
       })
 
-      User.hasMany(models.Restaurant, {
+      User.belongsToMany(models.Restaurant, {
         through: models.Save,
         foreignKey: 'userId',
         as: 'SavedRestaurants'
@@ -31,19 +31,19 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: 'userId'
       })
 
-      User.hasMany(models.Restaurant, {
+      User.belongsToMany(models.Restaurant, {
         through: models.Comment,
         foreignKey: 'userId',
         as: 'CommentedRestaurants'
       })
 
-      User.hasMany(models.User, {
+      User.belongsToMany(models.User, {
         through: models.Followship,
         foreignKey: 'followingId',
         as: 'Followers'
       })
 
-      User.hasMany(models.User, {
+      User.belongsToMany(models.User, {
         through: models.Followship,
         foreignKey: 'followerId',
         as: 'Followings'

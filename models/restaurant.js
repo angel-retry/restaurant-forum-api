@@ -12,7 +12,7 @@ module.exports = (sequelize, DataTypes) => {
     static associate (models) {
       Restaurant.belongsTo(models.Category, { foreignKey: 'categoryId' })
 
-      Restaurant.hasMany(models.User, {
+      Restaurant.belongsToMany(models.User, {
         through: models.Like,
         foreignKey: 'restaurantId',
         as: 'LikedUsers'
@@ -23,7 +23,7 @@ module.exports = (sequelize, DataTypes) => {
         as: 'CreatedBy'
       })
 
-      Restaurant.hasMany(models.User, {
+      Restaurant.belongsToMany(models.User, {
         through: models.Save,
         foreignKey: 'restaurantId',
         as: 'SavedUsers'
@@ -33,7 +33,7 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: 'restaurantId'
       })
 
-      Restaurant.hasMany(models.User, {
+      Restaurant.belongsToMany(models.User, {
         through: models.Comment,
         foreignKey: 'restaurantId',
         as: 'CommentedUsers'
