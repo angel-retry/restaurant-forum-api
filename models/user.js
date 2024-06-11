@@ -45,8 +45,8 @@ module.exports = (sequelize, DataTypes) => {
 
       User.hasMany(models.User, {
         through: models.Followship,
-        foreignKey: 'followingId',
-        as: 'Followers'
+        foreignKey: 'followerId',
+        as: 'Followings'
       })
     }
   }
@@ -74,7 +74,8 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       defaultValue: false
     },
-    introduction: DataTypes.TEXT
+    introduction: DataTypes.TEXT,
+    avatar: DataTypes.STRING
   }, {
     sequelize,
     modelName: 'User',
