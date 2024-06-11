@@ -9,10 +9,10 @@ module.exports = {
 
     const followships = []
 
-    for (let i = 0; i < 15; i++) {
-      let followingId, followerId
+    while (followships.length < 15) {
+      let followingId
 
-      followerId = users[Math.floor(Math.random() * users.length)].id
+      const followerId = users[Math.floor(Math.random() * users.length)].id
 
       do {
         followingId = users[Math.floor(Math.random() * users.length)].id
