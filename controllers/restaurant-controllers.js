@@ -239,6 +239,24 @@ const restaurantControllers = {
       .then(top10Restaurants => {
         return res.json({ status: 'success', top10Restaurants })
       })
+  },
+  getFeedsRestaurants: (req, res, next) => {
+    return Restaurant.findAll({
+      attributes: [
+        'id',
+        'name',
+        'image',
+        'introduction',
+        'createdAt'
+      ],
+      includes: [
+        { model: Category, attributes: ['id', 'name'] }
+      ],
+      order: [['createdAt', 'DESC']]
+    })
+      .then(feedsRestaurants => {
+        return res.json({ status: 'success', feedsRestaurants })
+      })
   }
 }
 
