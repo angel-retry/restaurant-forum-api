@@ -47,6 +47,7 @@ router.get('/comments/feeds', authenticated, commentControllers.getFeedsComments
 router.post('/comments/:restaurantId', authenticated, commentControllers.postComments)
 
 router.post('/following/:followingId', authenticated, followeshipControllers.postFollowing)
+router.delete('/following/:followingId', authenticated, followeshipControllers.deleteFollowing)
 
 router.use('', apiErrorHandler)
 
