@@ -1,6 +1,6 @@
 const { Op } = require('sequelize')
 const { getOffset, getPagination } = require('../helpers/pagination-helpers')
-const { Restaurant, Category, User } = require('../models')
+const { Restaurant, Category, User, sequelize, Comment } = require('../models')
 const { localFileHandler } = require('../helpers/file-helpers')
 
 const restaurantControllers = {
@@ -209,6 +209,36 @@ const restaurantControllers = {
         })
       })
       .catch(err => next(err))
+  },
+  getTop10Restaurants: (req, res, next) => {
+    return Restaurant.findAll({
+      attributes: [
+        'id',
+        'name',
+        'image',
+        'introduction',
+        [
+          sequelize.literal(`(
+            SELECT COUNT(*)
+            FROM Saves
+            WHERE restaurant_id = Restaurant.id
+          )`),
+          'SavedUsersCount'
+        ]
+      ],
+      include: [
+        { model: User, as: 'LikedUsers' },
+        { model: User, as: 'SavedUsers' },
+        { model: Comment, attributes: ['id'] },
+        { model: Category, attributes: ['id', 'name'] }
+      ],
+      having: sequelize.literal('SavedUsersCount > 0'),
+      order: [[sequelize.literal('SavedUsersCount'), 'DESC']],
+      limit: 10
+    })
+      .then(top10Restaurants => {
+        return res.json({ status: 'success', top10Restaurants })
+      })
   }
 }
 
