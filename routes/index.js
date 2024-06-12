@@ -4,6 +4,7 @@ const authControllers = require('../controllers/auth-controllers')
 const router = express.Router()
 const passport = require('../config/passport')
 const { authenticated } = require('../middlewares/api-auth')
+const restaurantControllers = require('../controllers/restaurant-controllers')
 
 router.post('/signup', authControllers.postSignup)
 
@@ -24,10 +25,7 @@ router.get('/auth/google', passport.authenticate('google', { scope: ['email', 'p
 
 router.get('/auth/google/callback', passport.authenticate('google', { session: false }), authControllers.postSignin)
 
-router.get('/restaurants', authenticated, function (req, res) {
-  const user = req.user
-  return res.json({ user })
-})
+router.get('/restaurants', authenticated, restaurantControllers.getRestaurants)
 
 router.use('', apiErrorHandler)
 
