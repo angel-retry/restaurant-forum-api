@@ -6,6 +6,7 @@ const passport = require('../config/passport')
 const { authenticated } = require('../middlewares/api-auth')
 const restaurantControllers = require('../controllers/restaurant-controllers')
 const upload = require('../middlewares/multer')
+const userControllers = require('../controllers/user-controllers')
 
 router.post('/signup', authControllers.postSignup)
 
@@ -34,6 +35,8 @@ router.get('/restaurants/:id', authenticated, restaurantControllers.getRestauran
 router.put('/restaurants/:restaurantId', authenticated, restaurantControllers.putRestaurant)
 router.delete('/restaurants/:restaurantId', authenticated, restaurantControllers.deleteRestaurant)
 router.get('/restaurants', authenticated, restaurantControllers.getRestaurants)
+
+router.get('/users/:userId', authenticated, userControllers.getUserProfile)
 
 router.use('', apiErrorHandler)
 
