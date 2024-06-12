@@ -1,6 +1,7 @@
 const { Op } = require('sequelize')
 const { getOffset, getPagination } = require('../helpers/pagination-helpers')
 const { Restaurant, Category, User } = require('../models')
+const { localFileHandler } = require('../helpers/file-helpers')
 
 const restaurantControllers = {
   getRestaurants: (req, res, next) => {
@@ -66,6 +67,16 @@ const restaurantControllers = {
       })
       .then(updatedRestaurant => {
         return res.json({ restaurant: updatedRestaurant })
+      })
+      .catch(err => next(err))
+  },
+  postRestaurantImage: (req, res, next) => {
+    const { file } = req
+    console.log({ file })
+
+    return localFileHandler(file)
+      .then(filePath => {
+        return res.json({ filePath })
       })
       .catch(err => next(err))
   }

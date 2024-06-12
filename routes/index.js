@@ -5,6 +5,7 @@ const router = express.Router()
 const passport = require('../config/passport')
 const { authenticated } = require('../middlewares/api-auth')
 const restaurantControllers = require('../controllers/restaurant-controllers')
+const upload = require('../middlewares/multer')
 
 router.post('/signup', authControllers.postSignup)
 
@@ -25,6 +26,7 @@ router.get('/auth/google', passport.authenticate('google', { scope: ['email', 'p
 
 router.get('/auth/google/callback', passport.authenticate('google', { session: false }), authControllers.postSignin)
 
+router.post('/restaurants/image', authenticated, upload.single('image'), restaurantControllers.postRestaurantImage)
 router.get('/restaurants/:id', authenticated, restaurantControllers.getRestaurant)
 router.get('/restaurants', authenticated, restaurantControllers.getRestaurants)
 
