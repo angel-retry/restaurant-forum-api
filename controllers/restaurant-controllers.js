@@ -79,6 +79,34 @@ const restaurantControllers = {
         return res.json({ filePath })
       })
       .catch(err => next(err))
+  },
+  postRestaurant: (req, res, next) => {
+    const {
+      name,
+      address,
+      addressUrl,
+      openingHours,
+      tel,
+      introduction,
+      categoryId,
+      image
+    } = req.body
+    const createdBy = req.user.id
+    return Restaurant.create({
+      name,
+      address,
+      addressUrl,
+      openingHours,
+      tel,
+      introduction,
+      categoryId,
+      image,
+      createdBy
+    })
+      .then(newRestaurant => {
+        return res.status(201).json({ status: 'success', restaurant: newRestaurant })
+      })
+      .then(err => next(err))
   }
 }
 

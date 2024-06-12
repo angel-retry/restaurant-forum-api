@@ -26,6 +26,7 @@ router.get('/auth/google', passport.authenticate('google', { scope: ['email', 'p
 
 router.get('/auth/google/callback', passport.authenticate('google', { session: false }), authControllers.postSignin)
 
+router.post('/restaurants', authenticated, authenticated, restaurantControllers.postRestaurant)
 router.post('/restaurants/image', authenticated, upload.single('image'), restaurantControllers.postRestaurantImage)
 router.get('/restaurants/:id', authenticated, restaurantControllers.getRestaurant)
 router.get('/restaurants', authenticated, restaurantControllers.getRestaurants)
