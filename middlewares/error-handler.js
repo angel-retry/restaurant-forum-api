@@ -6,7 +6,7 @@ module.exports = {
         message: `${err.name} : ${err.message}`
       })
     } else {
-      res.stauts(500).json({
+      res.status(500).json({
         status: 'error',
         message: `${err}`
       })

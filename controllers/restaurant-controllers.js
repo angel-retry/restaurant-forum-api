@@ -92,6 +92,13 @@ const restaurantControllers = {
       image
     } = req.body
     const createdBy = req.user.id
+
+    if (!name || !categoryId || !introduction || !createdBy) {
+      const err = new Error('請填好欄位!')
+      err.status = 400
+      throw err
+    }
+
     return Restaurant.create({
       name,
       address,
@@ -106,7 +113,62 @@ const restaurantControllers = {
       .then(newRestaurant => {
         return res.status(201).json({ status: 'success', restaurant: newRestaurant })
       })
-      .then(err => next(err))
+      .catch(err => next(err))
+  },
+  putRestaurant: (req, res, next) => {
+    const { restaurantId } = req.params
+    const {
+      name,
+      address,
+      addressUrl,
+      openingHours,
+      tel,
+      introduction,
+      categoryId,
+      image
+    } = req.body
+    const createdBy = req.user.id
+
+    if (!name || !categoryId || !introduction || !createdBy) {
+      const err = new Error('請填好欄位!')
+      err.status = 400
+      throw err
+    }
+
+    return Restaurant.findByPk(restaurantId)
+      .then(restaurant => {
+        if (!restaurant) {
+          const err = new Error('沒有找到這間餐廳!')
+          err.status = 404
+          throw err
+        }
+        console.log({ restaurant: restaurant.toJSON() })
+
+        if (restaurant.toJSON().createdBy !== createdBy) {
+          const err = new Error('你沒有權限修改這間餐廳!')
+          err.status = 403
+          throw err
+        }
+
+        return restaurant.update({
+          name,
+          address,
+          addressUrl,
+          openingHours,
+          tel,
+          introduction,
+          categoryId,
+          image
+        })
+          .then(updatedRestaurant => {
+            return res.json({
+              status: 'success',
+              restaurant: updatedRestaurant
+            })
+          })
+          .catch(err => next(err))
+      })
+      .catch(err => next(err))
   }
 }
 

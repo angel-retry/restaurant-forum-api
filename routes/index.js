@@ -29,6 +29,7 @@ router.get('/auth/google/callback', passport.authenticate('google', { session: f
 router.post('/restaurants', authenticated, authenticated, restaurantControllers.postRestaurant)
 router.post('/restaurants/image', authenticated, upload.single('image'), restaurantControllers.postRestaurantImage)
 router.get('/restaurants/:id', authenticated, restaurantControllers.getRestaurant)
+router.put('/restaurants/:restaurantId', authenticated, restaurantControllers.putRestaurant)
 router.get('/restaurants', authenticated, restaurantControllers.getRestaurants)
 
 router.use('', apiErrorHandler)
