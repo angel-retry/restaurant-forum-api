@@ -3,8 +3,10 @@ const { apiErrorHandler } = require('../middlewares/error-handler')
 const authControllers = require('../controllers/auth-controllers')
 const router = express.Router()
 const passport = require('../config/passport')
+const { authenticated } = require('../middlewares/api-auth')
 
 router.post('/signup', authControllers.postSignup)
+
 router.post('/signin', (req, res, next) => {
   const { email, password } = req.body
   if (!email || !password) {
@@ -18,9 +20,9 @@ router.post('/signin', (req, res, next) => {
   })(req, res, next)
 }, authControllers.postSignin)
 
-router.get('/restaurants', function (req, res) {
-  const data = 5
-  return res.json({ data })
+router.get('/restaurants', authenticated, function (req, res) {
+  const user = req.user
+  return res.json({ user })
 })
 
 router.use('', apiErrorHandler)

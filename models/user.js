@@ -17,7 +17,7 @@ module.exports = (sequelize, DataTypes) => {
       })
 
       User.hasMany(models.Restaurant, {
-        foreignKey: 'userId',
+        foreignKey: 'createdBy',
         as: 'CreatedRestaurants'
       })
 

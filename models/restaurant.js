@@ -19,7 +19,7 @@ module.exports = (sequelize, DataTypes) => {
       })
 
       Restaurant.belongsTo(models.User, {
-        foreignKey: 'userId',
+        foreignKey: 'createdBy',
         as: 'CreatedBy'
       })
 
