@@ -1,6 +1,6 @@
 const { Op } = require('sequelize')
 const { getOffset, getPagination } = require('../helpers/pagination-helpers')
-const { Restaurant, Category } = require('../models')
+const { Restaurant, Category, User } = require('../models')
 
 const restaurantControllers = {
   getRestaurants: (req, res, next) => {
@@ -41,6 +41,31 @@ const restaurantControllers = {
           categoryId,
           search
         })
+      })
+      .catch(err => next(err))
+  },
+  getRestaurant: (req, res, next) => {
+    const { id } = req.params
+
+    Restaurant.findByPk(id, {
+      include: [
+        Category,
+        { model: User, as: 'LikedUsers' },
+        { model: User, as: 'SavedUsers' },
+        { model: User, as: 'CommentedUsers' },
+        { model: User, as: 'CreatedBy' }
+      ]
+    })
+      .then(restaurant => {
+        if (!restaurant) {
+          const err = new Error('沒有找到這間餐廳!')
+          err.status = 404
+          throw err
+        }
+        return restaurant.increment('viewCounts', { by: 1 })
+      })
+      .then(updatedRestaurant => {
+        return res.json({ restaurant: updatedRestaurant })
       })
       .catch(err => next(err))
   }
