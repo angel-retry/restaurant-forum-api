@@ -1,3 +1,4 @@
+const { localFileHandler } = require('../helpers/file-helpers')
 const { User, Restaurant, Category } = require('../models')
 
 const userControllers = {
@@ -25,6 +26,14 @@ const userControllers = {
           status: 'success',
           user
         })
+      })
+      .catch(err => next(err))
+  },
+  postUserProfileImage: (req, res, next) => {
+    const { file } = req
+    return localFileHandler(file)
+      .then(filePath => {
+        return res.json({ status: 'success', filePath })
       })
       .catch(err => next(err))
   }
