@@ -1,5 +1,5 @@
 const { localFileHandler } = require('../helpers/file-helpers')
-const { User, Restaurant, Category } = require('../models')
+const { User, Restaurant, Category, sequelize } = require('../models')
 
 const userControllers = {
   getUserProfile: (req, res, next) => {
@@ -64,6 +64,33 @@ const userControllers = {
         return res.json({
           status: 'success',
           updatedUser
+        })
+      })
+      .catch(err => next(err))
+  },
+  getTop10Users: (req, res, next) => {
+    return User.findAll({
+      attributes: [
+        'id',
+        'name',
+        'avatar',
+        [
+          sequelize.literal(`(
+            SELECT COUNT(*)
+            FROM Followships
+            WHERE following_id = User.id
+          )`),
+          'UserFollowersCount'
+        ]
+      ],
+      having: sequelize.literal('UserFollowersCount > 0'),
+      order: [[sequelize.literal('UserFollowersCount'), 'DESC']],
+      limit: 10
+    })
+      .then(top10Users => {
+        return res.json({
+          status: 'success',
+          top10Users
         })
       })
       .catch(err => next(err))
