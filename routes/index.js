@@ -7,6 +7,7 @@ const { authenticated } = require('../middlewares/api-auth')
 const restaurantControllers = require('../controllers/restaurant-controllers')
 const upload = require('../middlewares/multer')
 const userControllers = require('../controllers/user-controllers')
+const commentControllers = require('../controllers/comment-controllers')
 
 router.post('/signup', authControllers.postSignup)
 
@@ -40,6 +41,9 @@ router.get('/users/top10', authenticated, userControllers.getTop10Users)
 router.put('/users/:userId', authenticated, userControllers.putUser)
 router.get('/users/:userId/avatar', authenticated, upload.single('image'), userControllers.postUserProfileImage)
 router.get('/users/:userId', authenticated, userControllers.getUserProfile)
+
+router.get('/comments/feeds', authenticated, commentControllers.getFeedsComments)
+router.post('/comments/:restaurantId', authenticated, commentControllers.postComments)
 
 router.use('', apiErrorHandler)
 
