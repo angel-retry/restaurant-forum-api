@@ -30,6 +30,7 @@ router.post('/restaurants', authenticated, authenticated, restaurantControllers.
 router.post('/restaurants/image', authenticated, upload.single('image'), restaurantControllers.postRestaurantImage)
 router.get('/restaurants/:id', authenticated, restaurantControllers.getRestaurant)
 router.put('/restaurants/:restaurantId', authenticated, restaurantControllers.putRestaurant)
+router.delete('/restaurants/:restaurantId', authenticated, restaurantControllers.deleteRestaurant)
 router.get('/restaurants', authenticated, restaurantControllers.getRestaurants)
 
 router.use('', apiErrorHandler)

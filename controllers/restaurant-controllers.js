@@ -93,8 +93,14 @@ const restaurantControllers = {
     } = req.body
     const createdBy = req.user.id
 
-    if (!name || !categoryId || !introduction || !createdBy) {
+    if (!name || !categoryId || !introduction) {
       const err = new Error('請填好欄位!')
+      err.status = 400
+      throw err
+    }
+
+    if (!createdBy) {
+      const err = new Error('沒有取得使用者資料!')
       err.status = 400
       throw err
     }
@@ -127,10 +133,16 @@ const restaurantControllers = {
       categoryId,
       image
     } = req.body
-    const createdBy = req.user.id
+    const authId = req.user.id
 
-    if (!name || !categoryId || !introduction || !createdBy) {
+    if (!name || !categoryId || !introduction) {
       const err = new Error('請填好欄位!')
+      err.status = 400
+      throw err
+    }
+
+    if (!authId) {
+      const err = new Error('沒有取得使用者資料!')
       err.status = 400
       throw err
     }
@@ -144,7 +156,7 @@ const restaurantControllers = {
         }
         console.log({ restaurant: restaurant.toJSON() })
 
-        if (restaurant.toJSON().createdBy !== createdBy) {
+        if (restaurant.toJSON().createdBy !== authId) {
           const err = new Error('你沒有權限修改這間餐廳!')
           err.status = 403
           throw err
@@ -167,6 +179,34 @@ const restaurantControllers = {
             })
           })
           .catch(err => next(err))
+      })
+      .catch(err => next(err))
+  },
+  deleteRestaurant: (req, res, next) => {
+    const { restaurantId } = req.params
+    const authId = req.user.id
+
+    return Restaurant.findByPk(restaurantId)
+      .then(restaurant => {
+        if (!restaurant) {
+          const err = new Error('沒有找到這間餐廳!')
+          err.status = 404
+          throw err
+        }
+
+        if (restaurant.toJSON().createdBy !== authId) {
+          const err = new Error('沒有權限刪除這間餐廳!')
+          err.status = 403
+          throw err
+        }
+
+        return restaurant.destroy()
+      })
+      .then((deleteRestaurant) => {
+        return res.json({
+          status: 'success',
+          restaurant: deleteRestaurant
+        })
       })
       .catch(err => next(err))
   }
