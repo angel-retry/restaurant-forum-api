@@ -10,6 +10,7 @@ const userControllers = require('../controllers/user-controllers')
 const commentControllers = require('../controllers/comment-controllers')
 const followeshipControllers = require('../controllers/followship-controllers')
 const saveControllers = require('../controllers/save-controllers')
+const likeControllers = require('../controllers/like-controllers')
 
 router.post('/signup', authControllers.postSignup)
 
@@ -51,6 +52,10 @@ router.post('/following/:followingId', authenticated, followeshipControllers.pos
 router.delete('/following/:followingId', authenticated, followeshipControllers.deleteFollowing)
 
 router.post('/save/:restaurantId', authenticated, saveControllers.postSavedRestaurant)
+router.delete('/save/:restaurantId', authenticated, saveControllers.deleteSavedRestaurant)
+
+router.post('/like/:restaurantId', authenticated, likeControllers.postLikedRestaurant)
+router.delete('/like/:restaurantId', authenticated, likeControllers.deleteLikedRestaurant)
 
 router.use('', apiErrorHandler)
 

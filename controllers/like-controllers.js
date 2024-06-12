@@ -1,81 +1,81 @@
-const { Restaurant, Save } = require('../models')
+const { Restaurant, Like } = require('../models')
 
-const saveControllers = {
-  postSavedRestaurant: (req, res, next) => {
+const likeControllers = {
+  postLikedRestaurant: (req, res, next) => {
     const { restaurantId } = req.params
     const userId = req.user.id
 
     Promise.all([
       Restaurant.findByPk(restaurantId, { attributes: ['id'] }),
-      Save.findOne({
+      Like.findOne({
         where: {
           userId,
           restaurantId
         }
       })
     ])
-      .then(([restaurant, save]) => {
+      .then(([restaurant, like]) => {
         if (!restaurant) {
           const err = new Error('沒有這間餐廳!')
           err.status = 404
           throw err
         }
 
-        if (save) {
-          const err = new Error('你已經收藏過這間餐廳了!')
+        if (like) {
+          const err = new Error('你已經按讚過這間餐廳了!')
           err.status = 400
           throw err
         }
 
-        return Save.create({
+        return Like.create({
           userId,
           restaurantId
         })
       })
-      .then(newSaved => {
+      .then(newLiked => {
         return res.json({
           status: 'success',
-          newSaved
+          newLiked
         })
       })
       .catch(err => next(err))
   },
-  deleteSavedRestaurant: (req, res, next) => {
+  deleteLikedRestaurant: (req, res, next) => {
     const { restaurantId } = req.params
     const userId = req.user.id
 
     Promise.all([
       Restaurant.findByPk(restaurantId, { attributes: ['id'] }),
-      Save.findOne({
+      Like.findOne({
         where: {
           userId,
           restaurantId
         }
       })
     ])
-      .then(([restaurant, save]) => {
+      .then(([restaurant, like]) => {
         if (!restaurant) {
           const err = new Error('沒有這間餐廳!')
           err.status = 404
           throw err
         }
 
-        if (!save) {
-          const err = new Error('你沒有收藏過這間餐廳!')
+        if (!like) {
+          const err = new Error('你沒有按讚過這間餐廳!')
           err.status = 400
           throw err
         }
 
-        return save.destroy()
+        return like.destroy()
       })
-      .then(deleteSaved => {
+      .then(deleteLiked => {
         return res.json({
           status: 'success',
-          deleteSaved
+          deleteLiked
         })
       })
       .catch(err => next(err))
   }
 }
 
-module.exports = saveControllers
+module.exports = likeControllers
