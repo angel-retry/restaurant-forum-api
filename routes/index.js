@@ -20,6 +20,10 @@ router.post('/signin', (req, res, next) => {
   })(req, res, next)
 }, authControllers.postSignin)
 
+router.get('/auth/google', passport.authenticate('google', { scope: ['email', 'profile'] }))
+
+router.get('/auth/google/callback', passport.authenticate('google', { session: false }), authControllers.postSignin)
+
 router.get('/restaurants', authenticated, function (req, res) {
   const user = req.user
   return res.json({ user })

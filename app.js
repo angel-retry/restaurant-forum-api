@@ -4,11 +4,19 @@ const app = express()
 const port = 3000
 const passport = require('./config/passport')
 const router = require('./routes')
+const session = require('express-session')
 
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
 
+app.use(session({
+  secret: process.env.SESSION_SECRET,
+  resave: false,
+  saveUninitialized: false
+}))
+
 app.use(passport.initialize())
+app.use(passport.session())
 
 app.get('/', (req, res) => {
   res.send('Hello World!')
