@@ -9,6 +9,7 @@ const upload = require('../middlewares/multer')
 const userControllers = require('../controllers/user-controllers')
 const commentControllers = require('../controllers/comment-controllers')
 const followeshipControllers = require('../controllers/followship-controllers')
+const saveControllers = require('../controllers/save-controllers')
 
 router.post('/signup', authControllers.postSignup)
 
@@ -48,6 +49,8 @@ router.post('/comments/:restaurantId', authenticated, commentControllers.postCom
 
 router.post('/following/:followingId', authenticated, followeshipControllers.postFollowing)
 router.delete('/following/:followingId', authenticated, followeshipControllers.deleteFollowing)
+
+router.post('/save/:restaurantId', authenticated, saveControllers.postSavedRestaurant)
 
 router.use('', apiErrorHandler)
 
