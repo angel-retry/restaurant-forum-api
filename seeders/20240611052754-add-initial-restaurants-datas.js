@@ -38,7 +38,7 @@ module.exports = {
         name: faker.company.name(),
         tel: faker.phone.number(),
         address: location,
-        address_url: `https://www.google.com.tw/maps/place/${location}`,
+        address_url: `https://www.google.com.tw/maps/place/${state}`,
         category_id: categories[Math.floor(Math.random() * categories.length)].id,
         created_by: users[Math.floor(Math.random() * users.length)].id,
         introduction: faker.lorem.paragraph(),
