@@ -21,7 +21,7 @@ router.post('/signin', (req, res, next) => {
   }
   passport.authenticate('local', { session: false }, (err, user) => {
     if (err) return next(err)
-    if (!user) return res.status(401).json({ status: 401, message: '密碼輸入錯誤!' })
+    if (!user) return res.status(401).json({ status: 401, message: '帳號或密碼輸入錯誤!' })
     req.user = user
     next()
   })(req, res, next)
@@ -40,6 +40,7 @@ router.put('/restaurants/:restaurantId', authenticated, restaurantControllers.pu
 router.delete('/restaurants/:restaurantId', authenticated, restaurantControllers.deleteRestaurant)
 router.get('/restaurants', authenticated, restaurantControllers.getRestaurants)
 
+router.get('/users/auth/:authId', authenticated, userControllers.getAuthUser)
 router.get('/users/top10', authenticated, userControllers.getTop10Users)
 router.put('/users/:userId', authenticated, userControllers.putUser)
 router.get('/users/:userId/avatar', authenticated, upload.single('image'), userControllers.postUserProfileImage)

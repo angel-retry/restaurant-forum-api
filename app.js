@@ -6,6 +6,13 @@ const passport = require('./config/passport')
 const router = require('./routes')
 const session = require('express-session')
 const path = require('path')
+const cors = require('cors')
+
+app.use(cors({
+  origin: 'http://localhost:5173',
+  methods: ['GET', 'POST'],
+  allowedHeaders: ['Content-Type']
+}))
 
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
