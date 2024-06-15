@@ -1,5 +1,5 @@
 const { Op } = require('sequelize')
-const { getOffset, getPagination } = require('../helpers/pagination-helpers')
+const { getOffset } = require('../helpers/pagination-helpers')
 const { Restaurant, Category, User, sequelize, Comment } = require('../models')
 const { localFileHandler } = require('../helpers/file-helpers')
 
@@ -7,7 +7,7 @@ const restaurantControllers = {
   getRestaurants: (req, res, next) => {
     const { search } = req.query
     const categoryId = Number(req.query.categoryId)
-    const limit = 9
+    const limit = Number(req.query.limit) || 9
     const page = Number(req.query.page) || 1
     const offset = getOffset(page, limit)
 
@@ -27,20 +27,24 @@ const restaurantControllers = {
       ...(categoryId ? { categoryId } : {})
     }
     Restaurant.findAndCountAll({
-      include: [Category],
+      include: [
+        Category,
+        { model: User, as: 'LikedUsers' },
+        { model: User, as: 'SavedUsers' },
+        { model: User, as: 'CommentedUsers' }
+      ],
       where: whereCondition,
-      nest: true,
-      raw: true,
       limit,
-      offset
+      offset,
+      distinct: true
     })
       .then(restaurants => {
         return res.json({
           restaurants: restaurants.rows,
-          page,
-          pagination: getPagination(page, limit, restaurants.count),
+          count: restaurants.count,
           categoryId,
-          search
+          search,
+          limit
         })
       })
       .catch(err => next(err))
