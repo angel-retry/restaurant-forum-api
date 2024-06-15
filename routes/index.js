@@ -11,6 +11,7 @@ const commentControllers = require('../controllers/comment-controllers')
 const followeshipControllers = require('../controllers/followship-controllers')
 const saveControllers = require('../controllers/save-controllers')
 const likeControllers = require('../controllers/like-controllers')
+const categoryControllers = require('../controllers/category-controllers')
 
 router.post('/signup', authControllers.postSignup)
 
@@ -57,6 +58,8 @@ router.delete('/save/:restaurantId', authenticated, saveControllers.deleteSavedR
 
 router.post('/like/:restaurantId', authenticated, likeControllers.postLikedRestaurant)
 router.delete('/like/:restaurantId', authenticated, likeControllers.deleteLikedRestaurant)
+
+router.get('/categories', authenticated, categoryControllers.getCategories)
 
 router.use('', apiErrorHandler)
 
