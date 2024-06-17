@@ -5,27 +5,15 @@ const { localFileHandler } = require('../helpers/file-helpers')
 
 const restaurantControllers = {
   getRestaurants: (req, res, next) => {
-    const { search } = req.query
     const categoryId = Number(req.query.categoryId)
     const limit = Number(req.query.limit) || 9
     const page = Number(req.query.page) || 1
     const offset = getOffset(page, limit)
 
-    const searchCondition = search
-      ? {
-          [Op.or]: [
-            { name: { [Op.like]: `%${search}%` } },
-            { address: { [Op.like]: `%${search}%` } },
-            { introduction: { [Op.like]: `%${search}%` } },
-            { '$Category.name$': { [Op.like]: `%${search}%` } }
-          ]
-        }
-      : {}
-
     const whereCondition = {
-      ...searchCondition,
       ...(categoryId ? { categoryId } : {})
     }
+
     Restaurant.findAndCountAll({
       include: [
         Category,
@@ -43,7 +31,6 @@ const restaurantControllers = {
           restaurants: restaurants.rows,
           count: restaurants.count,
           categoryId,
-          search,
           limit
         })
       })
@@ -260,6 +247,51 @@ const restaurantControllers = {
     })
       .then(feedsRestaurants => {
         return res.json({ status: 'success', feedsRestaurants })
+      })
+  },
+  getSearchResturants: (req, res, next) => {
+    const keyword = req.query.keyword.trim()
+    const limit = Number(req.query.limit) || 9
+    const page = Number(req.query.page) || 1
+    const offset = getOffset(page, limit)
+
+    if (!keyword) {
+      const err = new Error('請輸入關鍵字!')
+      err.status = 400
+      throw err
+    }
+
+    const searchCondition = keyword
+      ? {
+          [Op.or]: [
+            { name: { [Op.like]: `%${keyword}%` } },
+            { address: { [Op.like]: `%${keyword}%` } },
+            { introduction: { [Op.like]: `%${keyword}%` } },
+            { '$Category.name$': { [Op.like]: `%${keyword}%` } }
+          ]
+        }
+      : {}
+
+    return Restaurant.findAndCountAll({
+      include: Category,
+      where: searchCondition,
+      distinct: true,
+      offset,
+      limit,
+      raw: true,
+      nest: true
+    })
+      .then(restaurants => {
+        return res.json({
+          restaurants: restaurants.rows,
+          count: restaurants.count,
+          limit,
+          page,
+          keyword
+        })
+      })
+      .catch(err => {
+        next(err)
       })
   }
 }

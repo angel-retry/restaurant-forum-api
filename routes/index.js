@@ -36,6 +36,7 @@ router.get('/restaurants/feeds', authenticated, restaurantControllers.getFeedsRe
 router.get('/restaurants/top10', authenticated, restaurantControllers.getTop10Restaurants)
 router.post('/restaurants', authenticated, restaurantControllers.postRestaurant)
 router.post('/restaurants/image', authenticated, upload.single('image'), restaurantControllers.postRestaurantImage)
+router.get('/restaurants/search', authenticated, restaurantControllers.getSearchResturants)
 router.get('/restaurants/:id', authenticated, restaurantControllers.getRestaurant)
 router.put('/restaurants/:restaurantId', authenticated, restaurantControllers.putRestaurant)
 router.delete('/restaurants/:restaurantId', authenticated, restaurantControllers.deleteRestaurant)
