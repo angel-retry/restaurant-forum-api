@@ -83,6 +83,9 @@ const userControllers = {
           'UserFollowersCount'
         ]
       ],
+      include: [
+        { model: Restaurant, as: 'CreatedRestaurants' }
+      ],
       having: sequelize.literal('UserFollowersCount > 0'),
       order: [[sequelize.literal('UserFollowersCount'), 'DESC']],
       limit: 10
