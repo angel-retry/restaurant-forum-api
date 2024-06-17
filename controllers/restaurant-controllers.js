@@ -240,7 +240,7 @@ const restaurantControllers = {
       limit: 10
     })
       .then(top10Restaurants => {
-        return res.json({ status: 'success', top10Restaurants })
+        return res.json({ top10Restaurants })
       })
   },
   getFeedsRestaurants: (req, res, next) => {
