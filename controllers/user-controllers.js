@@ -91,10 +91,7 @@ const userControllers = {
       limit: 10
     })
       .then(top10Users => {
-        return res.json({
-          status: 'success',
-          top10Users
-        })
+        return res.json({ top10Users })
       })
       .catch(err => next(err))
   },
