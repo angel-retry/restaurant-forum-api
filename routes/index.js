@@ -42,9 +42,10 @@ router.get('/restaurants/:id', authenticated, restaurantControllers.getRestauran
 router.put('/restaurants/:restaurantId', authenticated, restaurantControllers.putRestaurant)
 router.delete('/restaurants/:restaurantId', authenticated, restaurantControllers.deleteRestaurant)
 router.get('/restaurants', authenticated, restaurantControllers.getRestaurants)
+
 router.get('/users/top10', authenticated, userControllers.getTop10Users)
+router.post('/users/avatar', authenticated, upload.single('image'), userControllers.postUserProfileImage)
 router.put('/users/:userId', authenticated, userControllers.putUser)
-router.get('/users/:userId/avatar', authenticated, upload.single('image'), userControllers.postUserProfileImage)
 router.get('/users/:userId', authenticated, userControllers.getUserProfile)
 
 router.get('/comments/feeds', authenticated, commentControllers.getFeedsComments)

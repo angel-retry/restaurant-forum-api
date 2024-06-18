@@ -31,7 +31,7 @@ const userControllers = {
     const { file } = req
     return localFileHandler(file)
       .then(filePath => {
-        return res.json({ status: 'success', filePath })
+        return res.json({ filePath })
       })
       .catch(err => next(err))
   },
