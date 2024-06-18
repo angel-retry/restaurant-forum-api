@@ -59,22 +59,16 @@ const authControllers = {
     }
   },
   getAuthUser: (req, res, next) => {
-    const authId = Number(req.params.authId)
-    if (authId === req.user.id) {
-      const user = { ...req.user.toJSON() }
-      user.LikedRestaurants = user.LikedRestaurants.map(r => r.id)
-      user.SavedRestaurants = user.SavedRestaurants.map(r => r.id)
-      user.Followers = user.Followers.map(u => u.id)
-      user.Followings = user.Followings.map(u => u.id)
-      delete user.password
+    const user = { ...req.user.toJSON() }
+    user.LikedRestaurants = user.LikedRestaurants.map(r => r.id)
+    user.SavedRestaurants = user.SavedRestaurants.map(r => r.id)
+    user.Followers = user.Followers.map(u => u.id)
+    user.Followings = user.Followings.map(u => u.id)
+    delete user.password
 
-      return res.json({
-        user
-      })
-    }
-    const err = new Error('登入使用者不同!')
-    err.status = 403
-    throw err
+    return res.json({
+      user
+    })
   }
 }
 
