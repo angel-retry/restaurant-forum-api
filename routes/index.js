@@ -32,6 +32,8 @@ router.get('/auth/google', passport.authenticate('google', { scope: ['email', 'p
 
 router.get('/auth/google/callback', passport.authenticate('google', { session: false }), authControllers.postSignin)
 
+router.get('/auth/:authId', authenticated, authControllers.getAuthUser)
+
 router.get('/restaurants/feeds', authenticated, restaurantControllers.getFeedsRestaurants)
 router.get('/restaurants/top10', authenticated, restaurantControllers.getTop10Restaurants)
 router.post('/restaurants', authenticated, restaurantControllers.postRestaurant)
@@ -40,8 +42,6 @@ router.get('/restaurants/:id', authenticated, restaurantControllers.getRestauran
 router.put('/restaurants/:restaurantId', authenticated, restaurantControllers.putRestaurant)
 router.delete('/restaurants/:restaurantId', authenticated, restaurantControllers.deleteRestaurant)
 router.get('/restaurants', authenticated, restaurantControllers.getRestaurants)
-
-router.get('/users/auth/:authId', authenticated, userControllers.getAuthUser)
 router.get('/users/top10', authenticated, userControllers.getTop10Users)
 router.put('/users/:userId', authenticated, userControllers.putUser)
 router.get('/users/:userId/avatar', authenticated, upload.single('image'), userControllers.postUserProfileImage)

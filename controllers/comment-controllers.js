@@ -42,7 +42,6 @@ const commentControllers = {
     })
       .then(feedsComments => {
         return res.json({
-          status: 'success',
           feedsComments
         })
       })

@@ -63,10 +63,24 @@ passport.use(new JWTStrategy(jwtOptions, (jwtPayload, cb) => {
     include: [
       {
         model: Restaurant,
-        as: 'LikedRestaurants'
+        as: 'LikedRestaurants',
+        attributes: ['id']
       },
-      { model: User, as: 'Followers' },
-      { model: User, as: 'Followings' }
+      {
+        model: Restaurant,
+        as: 'SavedRestaurants',
+        attributes: ['id']
+      },
+      {
+        model: User,
+        as: 'Followers',
+        attributes: ['id']
+      },
+      {
+        model: User,
+        as: 'Followings',
+        attributes: ['id']
+      }
     ]
   })
     .then(user => {

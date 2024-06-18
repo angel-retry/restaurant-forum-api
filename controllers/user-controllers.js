@@ -22,7 +22,6 @@ const userControllers = {
           throw err
         }
         return res.json({
-          status: 'success',
           user
         })
       })
@@ -94,19 +93,8 @@ const userControllers = {
         return res.json({ top10Users })
       })
       .catch(err => next(err))
-  },
-  getAuthUser: (req, res, next) => {
-    const authId = Number(req.params.authId)
-    if (authId === req.user.id) {
-      return res.json({
-        status: 'success',
-        user: req.user
-      })
-    }
-    const err = new Error('登入使用者不同!')
-    err.status = 403
-    throw err
   }
+
 }
 
 module.exports = userControllers
