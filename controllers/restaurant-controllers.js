@@ -252,13 +252,15 @@ const restaurantControllers = {
         'introduction',
         'createdAt'
       ],
-      includes: [
-        { model: Category, attributes: ['id', 'name'] }
+      include: [
+        { model: Category, attributes: ['id', 'name'] },
+        { model: User, as: 'CreatedBy', attributes: ['id', 'name', 'avatar'] }
       ],
-      order: [['createdAt', 'DESC']]
+      order: [['createdAt', 'DESC']],
+      limit: 10
     })
       .then(feedsRestaurants => {
-        return res.json({ status: 'success', feedsRestaurants })
+        return res.json({ feedsRestaurants })
       })
   }
 }
