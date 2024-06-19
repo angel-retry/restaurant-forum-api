@@ -31,7 +31,7 @@ const restaurantControllers = {
         Category,
         { model: User, as: 'LikedUsers' },
         { model: User, as: 'SavedUsers' },
-        { model: User, as: 'CommentedUsers' }
+        { model: Comment, attributes: ['id'] }
       ],
       where: whereCondition,
       limit,
@@ -39,8 +39,14 @@ const restaurantControllers = {
       distinct: true
     })
       .then(restaurants => {
+        const restaurantsData = restaurants.rows.map(restaurant => ({
+          ...restaurant.toJSON(),
+          LikedUsers: restaurant.LikedUsers.map(user => user.id),
+          SavedUsers: restaurant.SavedUsers.map(user => user.id),
+          Comments: restaurant.Comments.map(comment => comment.id)
+        }))
         return res.json({
-          restaurants: restaurants.rows,
+          restaurants: restaurantsData,
           count: restaurants.count,
           categoryId,
           limit
