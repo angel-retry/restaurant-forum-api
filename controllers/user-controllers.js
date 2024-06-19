@@ -43,7 +43,7 @@ const userControllers = {
       throw err
     }
 
-    const { name, introducion, avatar } = req.body
+    const { name, introduction, avatar } = req.body
     if (!name) {
       const err = new Error('請輸入你的名字!')
       err.status = 400
@@ -57,11 +57,10 @@ const userControllers = {
           err.status = 404
           throw err
         }
-        return user.update({ name, introducion, avatar })
+        return user.update({ name, introduction, avatar })
       })
       .then(updatedUser => {
         return res.json({
-          status: 'success',
           updatedUser
         })
       })

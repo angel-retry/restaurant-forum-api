@@ -54,9 +54,9 @@ const restaurantControllers = {
     Restaurant.findByPk(id, {
       include: [
         Category,
-        { model: User, as: 'LikedUsers' },
-        { model: User, as: 'SavedUsers' },
-        { model: User, as: 'CommentedUsers' },
+        { model: User, as: 'LikedUsers', attributes: ['id', 'name', 'avatar'] },
+        { model: User, as: 'SavedUsers', attributes: ['id', 'name', 'avatar'] },
+        { model: User, as: 'CommentedUsers', attributes: ['id', 'name', 'avatar'] },
         { model: User, as: 'CreatedBy' }
       ]
     })
@@ -69,6 +69,19 @@ const restaurantControllers = {
         return restaurant.increment('viewCounts', { by: 1 })
       })
       .then(updatedRestaurant => {
+        updatedRestaurant = updatedRestaurant.toJSON()
+        updatedRestaurant.LikedUsers = updatedRestaurant.LikedUsers.map(user => user.id)
+        updatedRestaurant.SavedUsers = updatedRestaurant.SavedUsers.map(user => user.id)
+        updatedRestaurant.CommentedUsers = updatedRestaurant.CommentedUsers.map(user => ({
+          id: user.Comment.id,
+          userId: user.id,
+          username: user.name,
+          avatar: user.avatar,
+          text: user.Comment.text,
+          createdAt: user.Comment.createdAt,
+          updatedAt: user.Comment.updatedAt
+        }))
+
         return res.json({ restaurant: updatedRestaurant })
       })
       .catch(err => next(err))
@@ -120,7 +133,7 @@ const restaurantControllers = {
       createdBy
     })
       .then(newRestaurant => {
-        return res.status(201).json({ status: 'success', restaurant: newRestaurant })
+        return res.json({ restaurant: newRestaurant })
       })
       .catch(err => next(err))
   },
