@@ -25,7 +25,6 @@ const commentControllers = {
     })
       .then(newComment => {
         return res.json({
-          status: 'success',
           newComment
         })
       })

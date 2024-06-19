@@ -56,8 +56,8 @@ const restaurantControllers = {
         Category,
         { model: User, as: 'LikedUsers', attributes: ['id', 'name', 'avatar'] },
         { model: User, as: 'SavedUsers', attributes: ['id', 'name', 'avatar'] },
-        { model: User, as: 'CommentedUsers', attributes: ['id', 'name', 'avatar'] },
-        { model: User, as: 'CreatedBy' }
+        { model: User, as: 'CreatedBy' },
+        { model: Comment, include: User }
       ]
     })
       .then(restaurant => {
@@ -72,14 +72,14 @@ const restaurantControllers = {
         updatedRestaurant = updatedRestaurant.toJSON()
         updatedRestaurant.LikedUsers = updatedRestaurant.LikedUsers.map(user => user.id)
         updatedRestaurant.SavedUsers = updatedRestaurant.SavedUsers.map(user => user.id)
-        updatedRestaurant.CommentedUsers = updatedRestaurant.CommentedUsers.map(user => ({
-          id: user.Comment.id,
-          userId: user.id,
-          username: user.name,
-          avatar: user.avatar,
-          text: user.Comment.text,
-          createdAt: user.Comment.createdAt,
-          updatedAt: user.Comment.updatedAt
+        updatedRestaurant.Comments = updatedRestaurant.Comments.map(comment => ({
+          id: comment.id,
+          text: comment.text,
+          createdAt: comment.createdAt,
+          updatedAt: comment.updatedAt,
+          userId: comment.User.id,
+          username: comment.User.name,
+          avatar: comment.User.avatar
         }))
 
         return res.json({ restaurant: updatedRestaurant })
