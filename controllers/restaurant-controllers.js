@@ -225,8 +225,7 @@ const restaurantControllers = {
       })
       .then((deleteRestaurant) => {
         return res.json({
-          status: 'success',
-          restaurant: deleteRestaurant
+          deleteRestaurant
         })
       })
       .catch(err => next(err))
