@@ -196,8 +196,7 @@ const restaurantControllers = {
         })
           .then(updatedRestaurant => {
             return res.json({
-              status: 'success',
-              restaurant: updatedRestaurant
+              updatedRestaurant
             })
           })
           .catch(err => next(err))
