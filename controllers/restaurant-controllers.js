@@ -247,8 +247,8 @@ const restaurantControllers = {
         ]
       ],
       include: [
-        { model: User, as: 'LikedUsers' },
-        { model: User, as: 'SavedUsers' },
+        { model: User, as: 'LikedUsers', attributes: ['id'] },
+        { model: User, as: 'SavedUsers', attributes: ['id'] },
         { model: Comment, attributes: ['id'] },
         { model: Category, attributes: ['id', 'name'] }
       ],
@@ -257,7 +257,13 @@ const restaurantControllers = {
       limit: 10
     })
       .then(top10Restaurants => {
-        return res.json({ top10Restaurants })
+        const restaurantsData = top10Restaurants.map(r => ({
+          ...r.toJSON(),
+          LikedUsers: r.LikedUsers.map(user => user.id),
+          SavedUsers: r.SavedUsers.map(user => user.id),
+          Comments: r.Comments.map(comment => comment.id)
+        }))
+        return res.json({ top10Restaurants: restaurantsData })
       })
   },
   getFeedsRestaurants: (req, res, next) => {

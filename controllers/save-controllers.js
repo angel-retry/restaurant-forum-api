@@ -32,10 +32,9 @@ const saveControllers = {
           restaurantId
         })
       })
-      .then(newSaved => {
+      .then(addSaved => {
         return res.json({
-          status: 'success',
-          newSaved
+          addSaved
         })
       })
       .catch(err => next(err))
@@ -70,7 +69,6 @@ const saveControllers = {
       })
       .then(deleteSaved => {
         return res.json({
-          status: 'success',
           deleteSaved
         })
       })
