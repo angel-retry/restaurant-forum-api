@@ -32,10 +32,9 @@ const likeControllers = {
           restaurantId
         })
       })
-      .then(newLiked => {
+      .then(addLiked => {
         return res.json({
-          status: 'success',
-          newLiked
+          addLiked
         })
       })
       .catch(err => next(err))
@@ -70,7 +69,6 @@ const likeControllers = {
       })
       .then(deleteLiked => {
         return res.json({
-          status: 'success',
           deleteLiked
         })
       })
