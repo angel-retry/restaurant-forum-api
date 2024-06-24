@@ -265,6 +265,7 @@ const restaurantControllers = {
         }))
         return res.json({ top10Restaurants: restaurantsData })
       })
+      .catch(err => next(err))
   },
   getFeedsRestaurants: (req, res, next) => {
     return Restaurant.findAll({
@@ -285,6 +286,7 @@ const restaurantControllers = {
       .then(feedsRestaurants => {
         return res.json({ feedsRestaurants })
       })
+      .catch(err => next(err))
   }
 }
 

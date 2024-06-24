@@ -82,14 +82,20 @@ const userControllers = {
         ]
       ],
       include: [
-        { model: Restaurant, as: 'CreatedRestaurants' }
+        { model: Restaurant, as: 'CreatedRestaurants', attributes: ['id'] },
+        { model: User, as: 'Followers', attributes: ['id'] }
       ],
       having: sequelize.literal('UserFollowersCount > 0'),
       order: [[sequelize.literal('UserFollowersCount'), 'DESC']],
       limit: 10
     })
       .then(top10Users => {
-        return res.json({ top10Users })
+        const usersData = top10Users.map(user => ({
+          ...user.toJSON(),
+          CreatedRestaurants: user.CreatedRestaurants.map(r => r.id),
+          Followers: user.Followers.map(u => u.id)
+        }))
+        return res.json({ top10Users: usersData })
       })
       .catch(err => next(err))
   }

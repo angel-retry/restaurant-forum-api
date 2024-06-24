@@ -67,7 +67,7 @@ const authControllers = {
     delete user.password
 
     return res.json({
-      user
+      authUser: user
     })
   }
 }
