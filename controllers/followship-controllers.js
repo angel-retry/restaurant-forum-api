@@ -33,7 +33,6 @@ const followeshipControllers = {
       })
       .then(newFollowship => {
         return res.json({
-          status: 'success',
           newFollowship
         })
       })
@@ -68,7 +67,6 @@ const followeshipControllers = {
       })
       .then(deleteFollowship => {
         return res.json({
-          status: 'success',
           deleteFollowship
         })
       })
