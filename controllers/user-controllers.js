@@ -11,8 +11,8 @@ const userControllers = {
         { model: Restaurant, as: 'LikedRestaurants', include: { model: Category, attributes: ['name'] } },
         { model: Restaurant, as: 'SavedRestaurants', include: { model: Category, attributes: ['name'] } },
         { model: Restaurant, as: 'CommentedRestaurants', include: { model: Category, attributes: ['name'] } },
-        { model: User, as: 'Followers' },
-        { model: User, as: 'Followings' }
+        { model: User, as: 'Followers', attributes: ['id'] },
+        { model: User, as: 'Followings', attributes: ['id'] }
       ]
     })
       .then(user => {
@@ -21,8 +21,14 @@ const userControllers = {
           err.status = 404
           throw err
         }
+
+        const userData = {
+          ...user.toJSON(),
+          Followers: user.Followers.map(u => u.id),
+          Followings: user.Followings.map(u => u.id)
+        }
         return res.json({
-          user
+          user: userData
         })
       })
       .catch(err => next(err))
