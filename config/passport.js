@@ -58,55 +58,11 @@ const jwtOptions = {
 }
 
 passport.use(new JWTStrategy(jwtOptions, (jwtPayload, cb) => {
-  console.log('jwtPayload.id', jwtPayload.id)
-  return User.findByPk(jwtPayload.id, {
-    include: [
-      {
-        model: Restaurant,
-        as: 'LikedRestaurants',
-        attributes: ['id']
-      },
-      {
-        model: Restaurant,
-        as: 'SavedRestaurants',
-        attributes: ['id']
-      },
-      {
-        model: User,
-        as: 'Followers',
-        attributes: ['id']
-      },
-      {
-        model: User,
-        as: 'Followings',
-        attributes: ['id']
-      }
-    ]
-  })
+  return User.findByPk(jwtPayload.id)
     .then(user => {
       cb(null, user)
     })
     .catch(err => cb(err))
 }))
-
-// passport.serializeUser((user, done) => {
-//   return done(null, user.id)
-// })
-
-// passport.deserializeUser((id, done) => {
-//   User.findByPk(id, {
-//     include: [
-//       { model: Restaurant, as: 'SavedRestaurants' },
-//       { model: Restaurant, as: 'LikedRestaurants' },
-//       { model: User, as: 'Followers' },
-//       { model: User, as: 'Followings' }
-//     ]
-//   })
-//     .then(user => {
-//       user = user.toJSON()
-//       console.log(user)
-//       return done(null, user)
-//     })
-// })
 
 module.exports = passport

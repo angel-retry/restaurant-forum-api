@@ -32,8 +32,6 @@ router.get('/auth/google', passport.authenticate('google', { scope: ['email', 'p
 
 router.get('/auth/google/callback', passport.authenticate('google', { session: false }), authControllers.postSignin)
 
-router.get('/auth/user', authenticated, authControllers.getAuthUser)
-
 router.get('/restaurants/feeds', authenticated, restaurantControllers.getFeedsRestaurants)
 router.get('/restaurants/top10', authenticated, restaurantControllers.getTop10Restaurants)
 router.post('/restaurants', authenticated, restaurantControllers.postRestaurant)

@@ -57,18 +57,6 @@ const authControllers = {
     } catch (error) {
       next(error)
     }
-  },
-  getAuthUser: (req, res, next) => {
-    const user = { ...req.user.toJSON() }
-    user.LikedRestaurants = user.LikedRestaurants.map(r => r.id)
-    user.SavedRestaurants = user.SavedRestaurants.map(r => r.id)
-    user.Followers = user.Followers.map(u => u.id)
-    user.Followings = user.Followings.map(u => u.id)
-    delete user.password
-
-    return res.json({
-      authUser: user
-    })
   }
 }
 
