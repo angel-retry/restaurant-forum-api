@@ -39,8 +39,8 @@ const authControllers = {
             return User.create({ name, email, password: hashPassword })
           })
       })
-      .then(() => {
-        return res.status(200).json({ status: 'success', message: '註冊成功!' })
+      .then((newUser) => {
+        return res.json({ newUser })
       })
       .catch(err => next(err))
   },

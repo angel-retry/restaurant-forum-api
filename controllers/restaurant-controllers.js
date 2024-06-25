@@ -62,7 +62,7 @@ const restaurantControllers = {
         Category,
         { model: User, as: 'LikedUsers', attributes: ['id', 'name', 'avatar'] },
         { model: User, as: 'SavedUsers', attributes: ['id', 'name', 'avatar'] },
-        { model: User, as: 'CreatedBy' },
+        { model: User, as: 'CreatedBy', attributes: ['id', 'name', 'avatar'], include: { model: User, as: 'Followers', attributes: ['id'] } },
         { model: Comment, include: User }
       ]
     })
@@ -87,6 +87,10 @@ const restaurantControllers = {
           username: comment.User.name,
           avatar: comment.User.avatar
         }))
+        updatedRestaurant.CreatedBy = {
+          ...updatedRestaurant.CreatedBy,
+          Followers: updatedRestaurant.CreatedBy.Followers.map(user => user.id)
+        }
 
         return res.json({ restaurant: updatedRestaurant })
       })

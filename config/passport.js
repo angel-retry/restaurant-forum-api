@@ -1,7 +1,7 @@
 const passport = require('passport')
 const LocalStrategy = require('passport-local')
 const bcrypt = require('bcryptjs')
-const { User, Restaurant } = require('../models')
+const { User } = require('../models')
 const passportJWT = require('passport-jwt')
 const GoogleStrategy = require('passport-google-oauth2').Strategy
 
