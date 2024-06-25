@@ -104,6 +104,33 @@ const userControllers = {
         return res.json({ top10Users: usersData })
       })
       .catch(err => next(err))
+  },
+  getUser: (req, res, next) => {
+    const { userId } = req.params
+    return User.findByPk(userId, {
+      attributes: ['id', 'name', 'avatar'],
+      include: [
+        { model: User, as: 'Followers', attributes: ['id'] },
+        { model: User, as: 'Followings', attributes: ['id'] }
+      ]
+
+    })
+      .then(user => {
+        if (!user) {
+          const err = new Error('找不到這位使用者!')
+          err.status = 404
+          throw err
+        }
+        const userData = {
+          ...user.toJSON(),
+          Followers: user.Followers.map(u => u.id),
+          Followings: user.Followings.map(u => u.id)
+        }
+        return res.json({
+          user: userData
+        })
+      })
+      .catch(err => next(err))
   }
 
 }

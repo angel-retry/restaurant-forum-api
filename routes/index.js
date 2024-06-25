@@ -43,6 +43,7 @@ router.get('/restaurants', authenticated, restaurantControllers.getRestaurants)
 
 router.get('/users/top10', authenticated, userControllers.getTop10Users)
 router.post('/users/avatar', authenticated, upload.single('image'), userControllers.postUserProfileImage)
+router.get('/users/data/:userId', authenticated, userControllers.getUser)
 router.put('/users/:userId', authenticated, userControllers.putUser)
 router.get('/users/:userId', authenticated, userControllers.getUserProfile)
 
