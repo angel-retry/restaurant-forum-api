@@ -41,6 +41,7 @@ const restaurantControllers = {
       .then(restaurants => {
         const restaurantsData = restaurants.rows.map(restaurant => ({
           ...restaurant.toJSON(),
+          introduction: restaurant.introduction.length > 100 ? restaurant.introduction.substring(0, 100) + '...' : restaurant.introduction,
           LikedUsers: restaurant.LikedUsers.map(user => user.id),
           SavedUsers: restaurant.SavedUsers.map(user => user.id),
           Comments: restaurant.Comments.map(comment => comment.id)
