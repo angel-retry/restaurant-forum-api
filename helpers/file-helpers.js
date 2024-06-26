@@ -1,16 +1,20 @@
-const fs = require('fs')
+const fs = require('fs').promises
+const path = require('path')
+
+const uploadDir = 'upload'
 
 const localFileHandler = file => {
-  return new Promise((resolve, reject) => {
-    if (!file) return resolve(null)
-    const fileName = `upload/${file.originalname}`
-    return fs.promises.readFile(file.path)
-      .then(data => {
-        return fs.promises.writeFile(fileName, data)
-      })
-      .then(() => resolve(`/${fileName}`))
-      .then(err => reject(err))
-  })
+  if (!file) return Promise.resolve(null)
+
+  const fileName = path.join(uploadDir, file.originalname)
+
+  return fs.readFile(file.path)
+    .then(data => fs.writeFile(path.join(__dirname, '..', fileName), data))
+    .then(() => `/${fileName}`)
+    .catch(err => {
+      console.error('Failed to handle local file:', err)
+      throw err
+    })
 }
 
 module.exports = {
