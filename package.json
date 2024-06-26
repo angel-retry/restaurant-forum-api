@@ -6,7 +6,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node app.js",
     "dev": "nodemon app.js",
-    "build": "npx sequelize db:migrate && npx sequelize db:seed:all"
+    "build": "npm install"
   },
   "keywords": [],
   "author": "",
