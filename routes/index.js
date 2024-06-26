@@ -30,7 +30,7 @@ router.post('/signin', (req, res, next) => {
 
 router.get('/auth/google', passport.authenticate('google', { scope: ['email', 'profile'] }))
 
-router.get('/auth/google/callback', passport.authenticate('google', { session: false }), authControllers.postSignin)
+router.get('/auth/google/callback', passport.authenticate('google', { session: false }), authControllers.postSigninWithGoogle)
 
 router.get('/restaurants/feeds', authenticated, restaurantControllers.getFeedsRestaurants)
 router.get('/restaurants/top10', authenticated, restaurantControllers.getTop10Restaurants)

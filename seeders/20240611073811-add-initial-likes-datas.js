@@ -3,7 +3,7 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up (queryInterface, Sequelize) {
-    const users = await queryInterface.sequelize.query('SELECT id FROM Users WHERE is_admin = false', {
+    const users = await queryInterface.sequelize.query('SELECT id FROM Users', {
       type: queryInterface.sequelize.QueryTypes.SELECT
     })
 
@@ -14,7 +14,7 @@ module.exports = {
     const likes = []
     const selectedPairs = new Set()
 
-    while (likes.length < 15) {
+    while (likes.length < 25) {
       let userId, restaurantId, pair
 
       do {

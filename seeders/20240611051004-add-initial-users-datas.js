@@ -11,22 +11,11 @@ module.exports = {
         name: `user${index + 1}`,
         email: `user${index + 1}@example.com`,
         password: hashPassword,
-        is_admin: false,
         avatar: faker.image.avatar(),
         created_at: new Date(),
         updated_at: new Date()
       }
     )))
-
-    await queryInterface.bulkInsert('Users', [{
-      name: 'root',
-      email: 'root@example.com',
-      password: hashPassword,
-      is_admin: true,
-      avatar: faker.image.avatar(),
-      created_at: new Date(),
-      updated_at: new Date()
-    }])
   },
 
   async down (queryInterface, Sequelize) {

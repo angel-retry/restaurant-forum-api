@@ -22,9 +22,6 @@ module.exports = {
       address_url: {
         type: Sequelize.STRING
       },
-      opening_hours: {
-        type: Sequelize.JSON
-      },
       introduction: {
         allowNull: false,
         type: Sequelize.TEXT

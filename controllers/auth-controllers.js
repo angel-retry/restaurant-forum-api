@@ -49,6 +49,19 @@ const authControllers = {
       const user = req.user.toJSON()
       delete user.password
       const token = jwt.sign(user, process.env.JWT_SECRET, { expiresIn: '30d' })
+      return res.json({
+        token,
+        user
+      })
+    } catch (error) {
+      next(error)
+    }
+  },
+  postSigninWithGoogle: (req, res, next) => {
+    try {
+      const user = req.user.toJSON()
+      delete user.password
+      const token = jwt.sign(user, process.env.JWT_SECRET, { expiresIn: '30d' })
       res.redirect(`http://localhost:5173/auth/callback/google?token=${token}&user=${encodeURIComponent(JSON.stringify(user))}`)
     } catch (error) {
       next(error)

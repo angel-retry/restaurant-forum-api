@@ -3,7 +3,7 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up (queryInterface, Sequelize) {
-    const users = await queryInterface.sequelize.query('SELECT id FROM Users WHERE is_admin = false', {
+    const users = await queryInterface.sequelize.query('SELECT id FROM Users', {
       type: queryInterface.sequelize.QueryTypes.SELECT
     })
 

@@ -54,7 +54,6 @@ module.exports = (sequelize, DataTypes) => {
     tel: DataTypes.STRING,
     address: DataTypes.STRING,
     addressUrl: DataTypes.STRING,
-    openingHours: DataTypes.JSON,
     introduction: {
       allowNull: false,
       type: DataTypes.TEXT
