@@ -1,7 +1,7 @@
 const { Op } = require('sequelize')
 const { getOffset } = require('../helpers/pagination-helpers')
 const { Restaurant, Category, User, sequelize, Comment } = require('../models')
-const { localFileHandler } = require('../helpers/file-helpers')
+const { imgurFileHandler } = require('../helpers/file-helpers')
 
 const restaurantControllers = {
   getRestaurants: (req, res, next) => {
@@ -101,7 +101,7 @@ const restaurantControllers = {
     const { file } = req
     console.log({ file })
 
-    return localFileHandler(file)
+    return imgurFileHandler(file)
       .then(filePath => {
         return res.json({ filePath })
       })

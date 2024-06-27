@@ -1,4 +1,4 @@
-const { localFileHandler } = require('../helpers/file-helpers')
+const { imgurFileHandler } = require('../helpers/file-helpers')
 const { User, Restaurant, Category, sequelize } = require('../models')
 
 const userControllers = {
@@ -33,9 +33,10 @@ const userControllers = {
       })
       .catch(err => next(err))
   },
-  postUserProfileImage: (req, res, next) => {
+  postUserProfileImage: async (req, res, next) => {
     const { file } = req
-    return localFileHandler(file)
+    console.log(file)
+    return imgurFileHandler(file)
       .then(filePath => {
         return res.json({ filePath })
       })
