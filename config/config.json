@@ -7,10 +7,10 @@
     "dialect": "mysql"
   },
   "test": {
-    "username": "uiotruqgvkyy14fv",
-    "password": "zAmaOnT8HviUC4sXaPqH",
-    "database": "bvryxotgykc1ave8hrcs",
-    "host": "bvryxotgykc1ave8hrcs-mysql.services.clever-cloud.com",
+    "username": "MYSQL_ADDON_USER",
+    "password": "MYSQL_ADDON_PASSWORD",
+    "database": "MYSQL_ADDON_DB",
+    "host": "MYSQL_ADDON_HOST",
     "dialect": "mysql"
   },
   "production": {
